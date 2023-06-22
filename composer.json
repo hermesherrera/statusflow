@@ -1,0 +1,21 @@
+{
+    "name": "hermesherrera/statusflow",
+    "description": "Status Flow",
+    "type": "package",
+    "license": "MIT",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "HermesHerrera\\StatusFlow\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hermes Herrera Capacho",
+            "email": "hermesherrera@hecatech.co"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    }
+}
