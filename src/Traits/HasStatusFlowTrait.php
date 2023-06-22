@@ -45,7 +45,7 @@ trait HasStatusFlowTrait
         );
     }
 
-    protected function statusIsEsditable() : Attribute
+    protected function statusIsEditable() : Attribute
     {
         return Attribute::make(
             get: fn () : bool => 
