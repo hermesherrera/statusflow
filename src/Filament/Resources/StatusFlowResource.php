@@ -112,7 +112,8 @@ class StatusFlowResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('model')
-                    ->options(config('status_flow.models')),
+                    ->options(config('status_flow.models'))
+                    ->label(__('StatusFlow::general.model')),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

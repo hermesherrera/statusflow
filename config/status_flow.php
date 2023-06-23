@@ -19,4 +19,6 @@ return [
         App\Models\ReservationVehiclePrepare::class => 'Alistamiento',
         App\Models\User::class => 'Usuarios',
     ],
+
+    'cache_seconds' => 3600,
 ];
