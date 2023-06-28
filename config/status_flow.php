@@ -16,8 +16,6 @@ return [
     ],
 
     'models' => [
-        App\Models\ReservationVehiclePrepare::class => 'Alistamiento',
-        App\Models\User::class => 'Usuarios',
     ],
 
     'cache_seconds' => now()->addHours(12),

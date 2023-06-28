@@ -39,6 +39,10 @@ class StatusFlowProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../database/migrations/tenant/create_status_flow_tables.php.stub' => database_path('migrations/tenant/'. $timestamp .'_create_status_flow_tables.php'),
         ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../config/status_flow.php' => config_path('status_flow.php'),
+        ], 'config');
     }
 
     public function register()
