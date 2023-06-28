@@ -3,6 +3,8 @@
 namespace HermesHerrera\StatusFlow;
 
 use Illuminate\Support\ServiceProvider;
+use HermesHerrera\StatusFlow\Models\StatusFlow;
+use HermesHerrera\StatusFlow\Observers\StatusFlowObserver;
 
 class StatusFlowProvider extends ServiceProvider
 {
@@ -13,6 +15,8 @@ class StatusFlowProvider extends ServiceProvider
         }
 
         $this->loadTranslationsFrom(__DIR__.'/../lang/', 'StatusFlow');
+
+        StatusFlow::observe(StatusFlowObserver::class);
     }
 
     public function register()

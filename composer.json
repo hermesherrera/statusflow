@@ -3,7 +3,7 @@
     "description": "Status Flow",
     "type": "package",
     "license": "MIT",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "autoload": {
         "psr-4": {
             "HermesHerrera\\StatusFlow\\": "src/"

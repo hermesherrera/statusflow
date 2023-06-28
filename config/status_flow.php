@@ -20,5 +20,5 @@ return [
         App\Models\User::class => 'Usuarios',
     ],
 
-    'cache_seconds' => 3600,
+    'cache_seconds' => now()->addHours(12),
 ];

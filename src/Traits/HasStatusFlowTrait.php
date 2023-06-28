@@ -2,104 +2,97 @@
 
 namespace HermesHerrera\StatusFlow\Traits;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use HermesHerrera\StatusFlow\Models\StatusFlow;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasStatusFlowTrait
 {
-    private function cacheKey()
+    protected $statusFlow;
+
+    private function cacheKey() : string
+    {        
+        return tenant('id') . '_status_flow';
+    }
+
+    private function init() : void
     {
-        return sprintf(
-            "%s/%s-%s",
-            $this->getTable(),
-            $this->getKey(),
-            $this->updated_at->timestamp
-        );
+        $this->statusFlow = Cache::remember($this->cacheKey(), config('status_flow.cache_seconds', now()->addHours(12)), function () : Collection  {
+            return StatusFlow::active($this)->get();
+        });
     }
 
     protected function statusDefault() : Attribute
     {
+        $this->init();
         return Attribute::make(
             get: fn () : string => 
-                Cache::remember($this->cacheKey() . '_default_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('name')
-                        ->active($this)
-                        ->where('is_default', true)
-                        ->latest()
-                        ->first()
-                        ->name ?? 'pending';
-                })
+                $this->statusFlow
+                    ->where('is_default', true)
+                    ->latest()
+                    ->first()
+                    ->name ?? 'pending'
         );
     }
 
     protected function statusTitle() : Attribute
     {    
+        $this->init();
         return Attribute::make(
             get: fn () : string => 
-                Cache::remember($this->cacheKey() . '_title_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('title')
-                        ->active($this)
-                        ->where('name', $this->status)
-                        ->first()
-                        ->title ?? $this->status;
-                })
+                $this->statusFlow
+                    ->where('name', $this->status)
+                    ->first()
+                    ->title ?? $this->status
         );
     }
 
     protected function statusColor() : Attribute
     {
+        $this->init();
         return Attribute::make(
             get: fn () : string => 
-                Cache::remember($this->cacheKey() . '_color_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('color')
-                        ->active($this)
-                        ->where('name', $this->status)
-                        ->first()
-                        ->color ?? config('status_flow.null_color');
-                })
+                $this->statusFlow
+                    ->where('name', $this->status)
+                    ->first()
+                    ->color ?? config('status_flow.null_color')
         );
     }
 
     protected function statusIsEditable() : Attribute
     {
+        $this->init();
         return Attribute::make(
             get: fn () : bool => 
-                Cache::remember($this->cacheKey() . '_is_editable_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('is_editable')
-                        ->active($this)
-                        ->where('name', $this->status)
-                        ->first()
-                        ->is_editable ?? true;
-                })
+                $this->statusFlow
+                    ->where('name', $this->status)
+                    ->first()
+                    ->is_editable ?? true
         );
     }
 
     protected function statusIsFinalized() : Attribute
     {
+        $this->init();
         return Attribute::make(
             get: fn () : bool =>
-                Cache::remember($this->cacheKey() . '_is_finalized_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('is_finalized')
-                        ->active($this)
-                        ->where('name', $this->status)
-                        ->first()
-                        ->is_finalized ?? false;
-                })
+                $this->statusFlow
+                    ->where('name', $this->status)
+                    ->first()
+                    ->is_finalized ?? false
         );
     }
 
     protected function statusIsNotifiable() : Attribute
     {
+        $this->init();
         return Attribute::make(
             get: fn () : bool => 
-                Cache::remember($this->cacheKey() . '_is_notifiable_', config('status_flow.cache_seconds', 3600), function() {
-                    return StatusFlow::select('is_notifiable')
-                        ->active($this)
-                        ->where('name', $this->status)
-                        ->first()
-                        ->is_notifiable ?? false;
-                })
+                $this->statusFlow
+                    ->where('name', $this->status)
+                    ->first()
+                    ->is_notifiable ?? false
         );
     }
 
