@@ -30,8 +30,7 @@ trait HasStatusFlowTrait
             get: fn () : string => 
                 $this->statusFlow
                     ->where('is_default', true)
-                    ->latest()
-                    ->first()
+                    ->last()
                     ->name ?? 'pending'
         );
     }

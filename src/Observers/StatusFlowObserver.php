@@ -16,4 +16,12 @@ class StatusFlowObserver
     {
         Cache::forget($this->cacheKey());
     }
+
+    /**
+     * Handle the Comment "created" event.
+     */
+    public function created(StatusFlow $statusFlow): void
+    {
+        Cache::forget($this->cacheKey());
+    }
 }
